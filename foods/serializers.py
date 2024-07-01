@@ -27,15 +27,13 @@ class FoodReviewSerializer(serializers.ModelSerializer):
     food = FoodSerializer(read_only=True)
     food_id = serializers.PrimaryKeyRelatedField(queryset=Food.objects.all(), source='food', write_only=True)
     user = serializers.StringRelatedField(read_only=True)
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user', write_only=True)
 
     class Meta:
         model = FoodReview
-        fields = '__all__'
+        fields = ['id', 'food', 'food_id', 'rating', 'review', 'user', 'created_at']
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['user'] = user
+        validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
 
 class FoodOrderSerializer(serializers.ModelSerializer):
@@ -52,6 +50,5 @@ class FoodOrderSerializer(serializers.ModelSerializer):
         return obj.total_price
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['user'] = user
+        validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
