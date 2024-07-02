@@ -1,6 +1,10 @@
 from rest_framework import viewsets, permissions
-from .models import Category, Food, FoodReview, FoodOrder
-from .serializers import CategorySerializer, FoodSerializer, FoodReviewSerializer, FoodOrderSerializer
+from .models import Category, Food, FoodReview, FoodOrder, Courier
+from .serializers import (
+    CategorySerializer, FoodSerializer,
+    FoodReviewSerializer, FoodOrderSerializer,
+    CourierSerializer  
+      )
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -24,3 +28,8 @@ class FoodOrderViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class CourierViewSet(viewsets.ModelViewSet):
+    queryset = Courier.objects.all()
+    serializer_class = CourierSerializer
+    permission_classes = [permissions.AllowAny]
