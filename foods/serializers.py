@@ -1,5 +1,3 @@
-# serializers.py
-
 from rest_framework import serializers
 from .models import Category, Food, FoodReview, FoodOrder, Courier
 from users.models import User
@@ -50,7 +48,7 @@ class FoodOrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FoodOrder
-        fields = ['id', 'food', 'food_id', 'quantity', 'total_price', 'user', 'user_id', 'courier', 'courier_id', 'created_at']
+        fields = ['id', 'food', 'food_id', 'quantity', 'total_price', 'user', 'user_id', 'courier', 'courier_id', 'status', 'created_at']
 
     def create(self, validated_data):
         user = self.context['request'].user

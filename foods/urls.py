@@ -1,8 +1,8 @@
 from rest_framework.routers import DefaultRouter
 from .views import (
-        CategoryViewSet, FoodViewSet,
-        FoodReviewViewSet, FoodOrderViewSet,
-        CourierViewSet
+    CategoryViewSet, FoodViewSet,
+    FoodReviewViewSet, FoodOrderViewSet,
+    CourierViewSet
 )
 
 router = DefaultRouter()

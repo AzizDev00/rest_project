@@ -1,5 +1,3 @@
-# models.py
-
 import uuid
 from django.db import models
 from shared.models import BaseModel
@@ -79,12 +77,25 @@ class FoodReview(BaseModel):
         return f'Review of {self.food.name} by {self.user.username}'
     
 class FoodOrder(BaseModel):
+    PENDING = 'pending'
+    IN_PROGRESS = 'in_progress'
+    DELIVERED = 'delivered'
+    DONE = 'done'
+    
+    STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (IN_PROGRESS, 'In Progress'),
+        (DELIVERED, 'Delivered'),
+        (DONE, 'Done'),
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     food = models.ForeignKey(Food, models.CASCADE, related_name='orders')
     user = models.ForeignKey('users.User', models.CASCADE, related_name='food_orders')
-    courier = models.ForeignKey('Courier', models.SET_NULL, null=True, blank=True, related_name='orders')  # Add this line
+    courier = models.ForeignKey('Courier', models.SET_NULL, null=True, blank=True, related_name='orders')
     quantity = models.IntegerField(default=1)
     total_price_field = models.FloatField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
