@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Category, Food, FoodReview, FoodOrder, Courier
 from users.models import User
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -63,3 +64,34 @@ class CourierSerializer(serializers.ModelSerializer):
     class Meta:
         model = Courier
         fields = '__all__'
+
+
+class RegisterCourierSerializer(serializers.ModelSerializer):
+    courier_name = serializers.CharField(write_only=True)
+    phone_number = serializers.CharField(write_only=True)
+    vehicle_type = serializers.CharField(write_only=True)
+    
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'email', 'courier_name', 'phone_number', 'vehicle_type']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        courier_name = validated_data.pop('courier_name')
+        phone_number = validated_data.pop('phone_number')
+        vehicle_type = validated_data.pop('vehicle_type')
+        
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+            email=validated_data['email']
+        )
+        
+        Courier.objects.create(
+            user=user,
+            name=courier_name,
+            phone_number=phone_number,
+            vehicle_type=vehicle_type
+        )
+        
+        return user

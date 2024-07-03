@@ -218,3 +218,5 @@ class ResetPasswordView(UpdateAPIView):
                 'refresh': user.token()['refresh_token'],
             }
         )
+    
+

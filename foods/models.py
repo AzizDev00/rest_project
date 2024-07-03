@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from shared.models import BaseModel
+from users.models import User
 
 class Category(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -111,8 +112,8 @@ class FoodOrder(BaseModel):
         return self.food.price * self.quantity
 
 
-class Courier(BaseModel):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class Courier(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='courier')
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=15)
     vehicle_type = models.CharField(max_length=50)
